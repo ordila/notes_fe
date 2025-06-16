@@ -8,7 +8,7 @@ Frontend application for note management built with React and GraphQL.
 - GraphQL
 - Apollo Client
 - TypeScript
--
+
 
 ## Installation
 
