@@ -1,0 +1,100 @@
+name: 🚀 CI/CD Pipeline
+
+# Коли запускати пайплайн
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+# Змінні середовища
+env:
+  NODE_VERSION: "18"
+
+jobs:
+  # 🧪 Етап тестування
+  test:
+    name: 🧪 Test & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      # Завантажуємо код
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      # Налаштовуємо Node.js
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      # Встановлюємо залежності
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      # Перевіряємо стиль коду
+      - name: 🎨 Run ESLint
+        run: npm run lint --if-present
+
+      # Запускаємо тести
+      - name: 🧪 Run tests
+        run: npm test -- --coverage --watchAll=false
+
+      # Завантажуємо покриття тестів
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  # 🏗️ Етап збірки
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      # Зберігаємо збірку як артефакт (оновлена версія v4)
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: build/
+          retention-days: 7
+
+  # 🚀 Етап розгортання (тільки для main гілки)
+  deploy:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: build/
+
+      # Тут можна додати розгортання на Vercel, Netlify, тощо
+      - name: 🎉 Deployment successful
+        run: echo "🚀 Готово до розгортання!"
