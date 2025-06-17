@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { DELETE_NOTE } from "../graphql/operations";
-import { Note } from "../types";
+import { DELETE_NOTE } from "../../graphql/operations";
+import { Note } from "../../types";
 import "./NotesList.css";
 
 interface NotesListProps {
@@ -66,8 +66,14 @@ const NotesList: React.FC<NotesListProps> = ({ notes, onEdit, onDelete }) => {
           </div>
 
           <div className="note-content">
-            {note.content.substring(0, 150)}
-            {note.content.length > 150 && "..."}
+            {note.content ? (
+              <>
+                {note.content.substring(0, 150)}
+                {note.content.length > 150 && "..."}
+              </>
+            ) : (
+              "Немає змісту"
+            )}
           </div>
 
           {note.tags && note.tags.length > 0 && (

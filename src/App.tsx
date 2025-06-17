@@ -1,7 +1,7 @@
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "./lib/apollo-client";
 
-import NotesApp from "./components/NotesApp";
+import NotesApp from "./components/NotesApp/NotesApp";
 
 import "./App.css";
 

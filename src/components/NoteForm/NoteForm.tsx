@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_NOTE, UPDATE_NOTE } from "../graphql/operations";
-import { Note, CreateNoteInput, UpdateNoteInput } from "../types";
+import { CREATE_NOTE, UPDATE_NOTE } from "../../graphql/operations";
+import { Note, CreateNoteInput, UpdateNoteInput } from "../../types";
 import "./NoteForm.css";
 
 interface NoteFormProps {

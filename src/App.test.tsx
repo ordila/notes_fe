@@ -1,9 +1,13 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "./tests/utils/test-utils";
+import App from "./App";
+import { getNotesLoadingMock } from "./tests/utils/mocks";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test("відображає заголовок додатку", () => {
+  render(<App />, { mocks: [getNotesLoadingMock] });
+
+  const headerElement = screen.getByText("📝 Система нотаток");
+  expect(headerElement).toBeInTheDocument();
+
+  const descriptionElement = screen.getByText("GraphQL + NestJS + Supabase");
+  expect(descriptionElement).toBeInTheDocument();
 });

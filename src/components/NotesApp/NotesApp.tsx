@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_NOTES } from "../graphql/operations";
-import { Note } from "../types";
-import NotesList from "./NotesList";
-import NoteForm from "./NoteForm";
+import { GET_NOTES } from "../../graphql/operations";
+import { Note } from "../../types";
+import NotesList from "../NotesList/NotesList";
+import NoteForm from "../NoteForm/NoteForm";
 import "./NotesApp.css";
 
 const NotesApp: React.FC = () => {
