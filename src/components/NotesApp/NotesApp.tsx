@@ -40,7 +40,7 @@ const NotesApp: React.FC = () => {
   const notes: Note[] = data?.notes || [];
 
   return (
-    <div className="notes-app">
+    <div className="notes-app" data-testid="notes-container">
       <div className="notes-header">
         <h2>Мої нотатки ({notes.length})</h2>
         <button className="btn btn-primary" onClick={handleCreateNote}>

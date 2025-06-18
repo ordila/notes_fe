@@ -11,6 +11,10 @@
 # production
 /build
 
+# testing
+/playwright-report
+/test-results
+
 # misc
 .DS_Store
 .env.local
