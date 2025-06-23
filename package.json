@@ -26,11 +26,16 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "type-check": "tsc --noEmit",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
+    "test:e2e": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:e2e:ui": "playwright test --ui --project=chromium",
+    "test:e2e:debug": "playwright test --debug --project=chromium",
     "test:e2e:report": "playwright show-report",
-    "test:e2e:install": "playwright install"
+    "test:e2e:install": "playwright install",
+    "test:integration": "playwright test --project=integration",
+    "test:integration:ui": "playwright test --ui --project=integration",
+    "test:integration:report": "playwright show-report",
+    "ci:test": "./scripts/ci-test.sh",
+    "ci:e2e-only": "npm run build && npm run test:e2e"
   },
   "eslintConfig": {
     "extends": [

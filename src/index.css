@@ -1,13 +1,143 @@
+/* Apple-стилістика: глобальні стилі */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.022em;
 }
 
 code {
   font-family:
-    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
+}
+
+/* Apple-стилістика: кнопки */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.23536;
+  letter-spacing: -0.022em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  background: #f6f6f6;
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled::before {
+  display: none;
+}
+
+/* Варіанти кнопок в Apple стилі */
+.btn-primary {
+  background: #007aff;
+  color: white;
+  border: 1px solid #007aff;
+}
+
+.btn-primary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary {
+  background: #8e8e93;
+  color: white;
+  border: 1px solid #8e8e93;
+}
+
+.btn-secondary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger {
+  background: #ff3b30;
+  color: white;
+  border: 1px solid #ff3b30;
+}
+
+.btn-danger::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-close {
+  background: rgba(120, 120, 128, 0.16);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 16px;
+  color: #8e8e93;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close:hover {
+  background: rgba(120, 120, 128, 0.24);
+}
+
+.btn-close::before {
+  display: none;
+}
+
+/* Розміри кнопок */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 15px;
+  border-radius: 16px;
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 19px;
+  border-radius: 24px;
 }

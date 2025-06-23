@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 
 test.describe("🎯 Простий працюючий E2E тест з моками", () => {
   test("✅ сторінка завантажується з мокованими даними", async ({ page }) => {
-    // Мокуємо GraphQL запит GetNotes
     await page.route("**/graphql", async (route) => {
       const request = route.request();
       const postData = request.postData();
@@ -19,15 +18,15 @@ test.describe("🎯 Простий працюючий E2E тест з мокам
                   title: "Тестова нотатка",
                   content: "Це тестовий контент нотатки",
                   tags: ["тест", "playwright"],
-                  createdAt: "2024-01-01T00:00:00Z",
-                  updatedAt: "2024-01-01T00:00:00Z",
+                  createdAt: "2024-01-01T12:00:00.000Z",
+                  updatedAt: "2024-01-01T12:00:00.000Z",
+                  __typename: "Note",
                 },
               ],
             },
           }),
         });
       } else {
-        // Для інших запитів повертаємо пустий успішний результат
         await route.fulfill({
           status: 200,
           contentType: "application/json",
@@ -36,31 +35,44 @@ test.describe("🎯 Простий працюючий E2E тест з мокам
       }
     });
 
-    // Переходимо на головну сторінку
     await page.goto("/");
 
-    // Перевіряємо що заголовок існує
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator("h1")).toContainText("Система нотаток");
 
-    // Перевіряємо що підзаголовок існує
     await expect(
       page.locator("text=GraphQL + NestJS + Supabase")
     ).toBeVisible();
 
-    // Чекаємо що кнопка "Додати нотатку" з'явилася (тепер вона має з'явитися)
     await expect(
       page.locator('button:has-text("Додати нотатку")')
     ).toBeVisible();
 
-    // Перевіряємо що мокована нотатка відображається
-    await expect(page.locator("text=Тестова нотатка")).toBeVisible();
+    await expect(page.locator('[data-testid="notes-container"]')).toBeVisible();
+
+    await expect(page.locator("text=Мої нотатки (1)")).toBeVisible();
+
+    await expect(page.locator(".note-card")).toHaveCount(1);
+    await expect(page.locator(".note-title")).toBeVisible();
+    await expect(page.locator(".note-title")).toContainText("Тестова нотатка");
+
+    await expect(page.locator(".note-content")).toBeVisible();
+    await expect(page.locator(".note-content")).toContainText(
+      "Це тестовий контент нотатки"
+    );
+
+    await expect(page.locator(".note-tags")).toBeVisible();
+    await expect(page.locator(".note-tags")).toContainText("#тест #playwright");
+
+    await expect(page.locator(".note-meta small")).toBeVisible();
+    await expect(page.locator(".note-meta small")).toContainText(
+      "Створено: 01.01.2024"
+    );
 
     console.log("✅ Сторінка завантажилася з мокованими даними!");
   });
 
   test("🔗 можна клікнути на кнопку додавання з моками", async ({ page }) => {
-    // Той самий мок
     await page.route("**/graphql", async (route) => {
       const request = route.request();
       const postData = request.postData();
@@ -86,11 +98,9 @@ test.describe("🎯 Простий працюючий E2E тест з мокам
 
     await page.goto("/");
 
-    // Чекаємо що кнопка завантажилася
     const addButton = page.locator('button:has-text("Додати нотатку")');
     await expect(addButton).toBeVisible();
 
-    // Клікаємо на кнопку
     await addButton.click();
 
     console.log("✅ Кнопка додавання працює з моками!");

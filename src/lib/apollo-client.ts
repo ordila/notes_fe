@@ -7,7 +7,7 @@ const getBackendUrl = () => {
     return process.env.REACT_APP_BACKEND_URL || "http://localhost:3000/graphql";
   }
   // В production використовуємо Railway
-  return "https://notesbe-production.up.railway.app";
+  return "https://notesbe-production.up.railway.app/graphql";
 };
 
 const httpLink = createHttpLink({

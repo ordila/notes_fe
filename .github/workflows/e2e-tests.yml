@@ -1,0 +1,129 @@
+name: 🎯 E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "18"
+
+jobs:
+  e2e-tests:
+    name: 🎯 E2E Tests (Mocked)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npm run test:e2e:install
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🎯 Run E2E tests (mocked)
+        run: npm run test:e2e
+
+      - name: 📊 Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-mocked
+          path: playwright-report/
+          retention-days: 7
+
+  integration-tests:
+    name: 🌐 Integration Tests (Production API)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npm run test:e2e:install
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🌐 Run Integration tests
+        run: npm run test:integration
+        env:
+          BACKEND_URL: ${{ secrets.PRODUCTION_API_URL }}
+
+      - name: 📊 Upload Integration Test Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: integration-test-results/
+          retention-days: 7
+
+  e2e-matrix:
+    name: 🌐 E2E Tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    if: github.ref == 'refs/heads/main'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npm run test:e2e:install
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🎯 Run E2E tests (${{ matrix.browser }})
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      - name: 📊 Upload Playwright Report (${{ matrix.browser }})
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 7

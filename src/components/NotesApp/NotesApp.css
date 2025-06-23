@@ -1,55 +1,104 @@
+/* Apple-стилістика: контейнер нотаток */
 .notes-app {
-  max-width: 100%;
+  width: 100%;
 }
 
 .notes-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .notes-header h2 {
-  color: #333;
-  font-size: 1.5rem;
+  color: #1d1d1f;
+  font-size: 28px;
   font-weight: 600;
+  line-height: 1.14286;
+  letter-spacing: 0.007em;
+  margin: 0;
 }
 
+/* Демо аудіо секція */
+.demo-audio-section {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.demo-audio-section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.demo-audio-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: #1d1d1f;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+/* Apple-стилістика: модальне вікно */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 20px;
+  animation: overlay-appear 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal {
-  background: white;
-  border-radius: 12px;
-  max-width: 600px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-radius: 18px;
+  max-width: 540px;
   width: 100%;
   max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  animation: modal-appear 0.2s ease-out;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modal-appear 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Анімації в Apple стилі */
+@keyframes overlay-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modal-appear {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(-20px);
+    transform: scale(0.95) translateY(-8px);
   }
   to {
     opacity: 1;
@@ -57,15 +106,65 @@
   }
 }
 
-@media (max-width: 768px) {
+/* Мобільна адаптація */
+@media (max-width: 734px) {
   .notes-header {
     flex-direction: column;
-    gap: 1rem;
+    gap: 16px;
     text-align: center;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .notes-header h2 {
+    font-size: 24px;
+  }
+
+  .demo-audio-section {
+    padding: 20px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+  }
+
+  .demo-audio-section h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
   }
 
   .modal {
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
+    margin: 16px;
+    max-width: calc(100% - 32px);
+    border-radius: 14px;
+  }
+
+  .modal-overlay {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .notes-header {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .notes-header h2 {
+    font-size: 22px;
+  }
+
+  .demo-audio-section {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+  }
+
+  .demo-audio-section h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .modal {
+    margin: 12px;
+    max-width: calc(100% - 24px);
   }
 }
